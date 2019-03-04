@@ -218,6 +218,7 @@
     <Content Include="App_Config\Include\Foundation.Analytics\Serialization.config" />
     <Content Include="Scripts\Foundation\Analytics\analytics.min.js" />
     <Content Include="Tests\ClientAnalyticsTests.html" />
+    <Content Include="App_Config\Include\Foundation.Analytics\IndexAnonContacts.config" />
     <None Include="packages.config" />
     <Content Include="App_Config\Include\ZFeature.Routes\AnalyticsRoutes.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />

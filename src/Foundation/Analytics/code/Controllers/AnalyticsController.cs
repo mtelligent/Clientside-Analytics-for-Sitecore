@@ -24,7 +24,7 @@ namespace SF.Foundation.Analytics
         [HttpGet]
         public HttpResponseMessage Index()
         {
-            return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
@@ -117,7 +117,7 @@ namespace SF.Foundation.Analytics
                 Sitecore.Diagnostics.Log.Error(string.Format("Error Tracking Interaction for {0}", data.interactionId), ex, this);
             }
 
-            return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
 
         [HttpPost]
@@ -150,7 +150,7 @@ namespace SF.Foundation.Analytics
             if (goalDefinition != null)
             {
                 page.RegisterGoal(goalDefinition);
-                return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK);
             }
             else
             {
@@ -189,7 +189,7 @@ namespace SF.Foundation.Analytics
             if (outcomeDefinition != null)
             {
                 Tracker.CurrentPage.RegisterOutcome(outcomeDefinition, outcome.currency, outcome.value);
-                return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK);
             }
             else
             {
@@ -228,7 +228,7 @@ namespace SF.Foundation.Analytics
             if (campaignDefinition != null)
             {
                 Tracker.CurrentPage.TriggerCampaign(campaignDefinition);
-                return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK);
             }
             else
             {
@@ -267,7 +267,7 @@ namespace SF.Foundation.Analytics
             if (pageEventDefinition != null)
             {
                 Tracker.CurrentPage.RegisterPageEvent(pageEventDefinition);
-                return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK);
             }
             else
             {
@@ -309,17 +309,17 @@ namespace SF.Foundation.Analytics
             //Do not track the API call
             Tracker.CurrentPage.Cancel();
 
-            return Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
 
         }
 
         [HttpGet]
-        public string EndSession()
+        public HttpResponseMessage EndSession()
         {
             var Tracker = this.GetTracker(false);
 
             System.Web.HttpContext.Current.Session.Abandon();
-            return "OK";
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
 
        

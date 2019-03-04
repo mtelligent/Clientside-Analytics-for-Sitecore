@@ -2,9 +2,154 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Tests of Client Analytics for Sitecore API</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/Scripts/Foundation/Analytics/sitecoreAnalytics.js"></script>
+    <script>
+        //Simulate Sitecore Home
+        SF.PageID = '{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}';
+
+        $(document).ready(function () {
+            $("#btnGetSitecoreEvents").click(function () {
+                SF.Analytics.getSitecoreEvents().done(function (data) {
+                    $("#outputGetSitecoreEvents").html(JSON.stringify(data, undefined, 2));
+                });
+            });
+            $("#btnGetSitecoreEvents").click(function () {
+                var id = $("#txtInteractionId").val();
+                SF.Analytics.trackInteraction(id);
+            });
+            $("#btnTrackGoal").click(function () {
+                var goal = $("#txtTrackGoal").val();
+                SF.Analytics.trackGoal(goal);
+            });
+            $("#btnTrackPageEvent").click(function () {
+                var event = $("#txtTrackPageEvent").val();
+                SF.Analytics.trackPageEvent(event);
+            });
+            $("#btnTrackCustomEvent").click(function () {
+                var event = $("#txtTrackCustomEvent").val();
+                var eventLabel = $("#txtTrackCustomEventLabel").val();
+                SF.Analytics.trackCustomEvent(event, eventLabel);
+            });
+            $("#btnTrackOutcome").click(function () {
+                var outcome = $("#txtTrackOutcome").val();
+                var currency = $("#txtTrackOutcomeCurrency").val();
+                var outcomeValue = $("#txtTrackOutcomeValue").val();
+                SF.Analytics.trackOutcome(outcome, currency, outcomeValue);
+            });
+            $("#btnTriggerCampaign").click(function () {
+                var campaign = $("#txtCampaign").val();
+                SF.Analytics.triggerCampaign(campaign);
+            });
+            $("#btnEndSession").click(function () {
+                SF.Analytics.endSession();
+            });
+        });
+    </script>
 </head>
 <body>
-
+    <h1>Tests of SF.Analytics</h1>
+    <p>Please visit the root site to ensure there is an active session before testing.</p>
+    <p>Don't forget to deploy & publish your marketing items.</p>
+    <ul>
+        <li>
+            <h2>getSitecoreEvents</h2>
+            <p>
+                Get's last request for current page and returns detail about current user and events fired.
+                Calls "GetTracker" API endpoint. Returns JQuery Promise, so you can bind to done event for data.
+            </p>
+            <pre>
+            SF.Analytics.getSitecoreEvents();
+            </pre>
+            <input type="button" id="btnGetSitecoreEvents" value="Try it Out" />
+            <pre id="outputGetSitecoreEvents">
+    
+            </pre>
+        </li>
+        <li>
+            <h2>trackInteraction</h2>
+            <p>
+                Can be used to raise and track a page load or "client interaction". These actually show up in the Path Analyzer as a state. Use the marketing control panel to define aditional interactions as needed.
+            </p>
+            <pre>
+            SF.Analytics.trackInteraction(interactionItemId);
+            </pre>
+            <input type="text" id="txtInteractionId" value="{7FE47D90-4496-431D-B9BC-1AF297F755A9}" />
+            <input type="button" id="btnTrackInteraction" value="Try it Out" />
+        </li>
+        <li>
+            <h2>trackGoal</h2>
+            <p>
+                Can be used to raise a goal by name or Id;
+            </p>
+            <pre>
+            SF.Analytics.trackGoal(goalName);
+            SF.Analytics.trackGoal(goalItemId);
+            </pre>
+            <input type="text" id="txtTrackGoal" value="Instant Demo" />
+            <input type="button" id="btnTrackGoal" value="Try it Out" />
+        </li>
+        <li>
+            <h2>trackPageEvent</h2>
+            <p>
+                Can be used to raise a page event by name or Id;
+            </p>
+            <pre>
+            SF.Analytics.trackGoal(eventName);
+            SF.Analytics.trackGoal(eventItemId);
+            </pre>
+            <input type="text" id="txtTrackPageEvent" value="PersonalizationEvent" />
+            <input type="button" id="btnTrackPageEvent" value="Try it Out" />
+        </li>
+        <li>
+            <h2>trackCustomEvent</h2>
+            <p>
+                Can be used to raise a custom event with custom data. Additional work may be needed to make custom data available in experience analytics.
+            </p>
+            <pre>
+            SF.Analytics.trackCustomEvent(eventName, eventLabel);
+            </pre>
+            <input type="text" id="txtTrackCustomEvent" value="PersonalizationEvent" />
+            <input type="text" id="txtTrackCustomEventLabel" value="searchTerm" />
+            <input type="button" id="btnTrackCustomEvent" value="Try it Out" />
+        </li>
+        <li>
+            <h2>trackOutcome</h2>
+            <p>
+                Can be used to raise an Outcome by Name or Id. Requires Currency and Value.
+            </p>
+            <pre>
+            SF.Analytics.trackOutcome(outcomeName, currency, value);
+            SF.Analytics.trackOutcome(outcomeId, currency, value);
+            </pre>
+            <input type="text" id="txtTrackOutcome" value="Marketing Lead" />
+            <input type="text" id="txtTrackOutcomeCurrency" value="USD" />
+            <input type="text" id="txtTrackOutcomeValue" value="0" />
+            <input type="button" id="btnTrackOutcome" value="Try it Out" />
+        </li>
+        <li>
+            <h2>triggerCampaign</h2>
+            <p>
+                Can be used to trigger a campaign by name or id.
+            </p>
+            <pre>
+            SF.Analytics.triggerCampaign(campaignName);
+            SF.Analytics.triggerCampaign(campaignId);
+            </pre>
+            <input type="text" id="txtCampaign" value="Test Campaign" />
+            <input type="button" id="btnTriggerCampaign" value="Try it Out" />
+        </li>
+        <li>
+            <h2>endSession</h2>
+            <p>
+                Forces End of Session and flush to xDB.
+            </p>
+            <pre>
+            SF.Analytics.endSession();
+            </pre>
+            <input type="button" id="btnEndSession" value="Try it Out" />
+        </li>
+    </ul>
 </body>
 </html>

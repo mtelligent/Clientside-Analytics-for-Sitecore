@@ -18,7 +18,7 @@ SF.Analytics = (function () {
         });
     },
     getSitecoreEvents = function () {
-       
+        var def = $.Deferred();
         var url = '/api/SF/1.0/analytics/GetTracker';
 
         var data = {
@@ -31,14 +31,17 @@ SF.Analytics = (function () {
             data: data,
             success: function (data) {
 
-                console.log('Retreived Data from Sitecore');
-                
+                console.log('Retreived Data from Sitecore');                
                 SF.SitecoreData = data;
+                def.resolve(data);
             },
             failure: function (errMsg) {
                 console.log('Failure' + errMsg);
+                def.reject();
             }
         });
+
+        return def.promise();
     },
     trackInteraction = function (id) {
 
@@ -84,12 +87,12 @@ SF.Analytics = (function () {
             }
         });
         },
-    trackGoal = function (goalName, goalId) {
+    trackGoal = function (goal) {
             var url = '/api/SF/1.0/analytics/RegisterGoal';
 
             var data = {
-                goal: goalName,
-                goalId: goalId,
+                goal: goal,
+                goalId: goal,
                 pageId: SF.PageID
             };
 
@@ -105,12 +108,12 @@ SF.Analytics = (function () {
                 }
             });
         },
-        trackOutcome = function (outcomeName, outcomeId, currency, value) {
+    trackOutcome = function (outcome, currency, value) {
             var url = '/api/SF/1.0/analytics/RegisterOutcome';
 
             var data = {
-                outcome: outcomeName,
-                outcomeId: outcomeId,
+                outcome: outcome,
+                outcomeId: outcome,
                 currency: currency,
                 value: value,
                 pageId: SF.PageID
@@ -128,12 +131,12 @@ SF.Analytics = (function () {
                 }
             });
         },
-        trackPageEvent = function (eventName, eventId) {
+    trackPageEvent = function (event) {
             var url = '/api/SF/1.0/analytics/RegisterPageEvent';
 
             var data = {
-                eventName: eventName,
-                eventId: eventId,
+                eventName: event,
+                eventId: event,
                 pageId: SF.PageID
             };
 
@@ -149,12 +152,12 @@ SF.Analytics = (function () {
                 }
             });
         },
-        triggerCampaign = function (campaignName, campaignId) {
+    triggerCampaign = function (campaign) {
             var url = '/api/SF/1.0/analytics/TriggerCampaign';
 
             var data = {
-                campaign: campaignName,
-                campaignId: campaignId,
+                campaign: campaign,
+                campaignId: campaign,
                 pageId: SF.PageID
             };
 

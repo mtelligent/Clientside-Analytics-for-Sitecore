@@ -3,6 +3,8 @@ using WebActivatorEx;
 using SF.Foundation.Analytics;
 using Swashbuckle.Application;
 using System.Linq;
+using System.Web.Http.Description;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -33,7 +35,15 @@ namespace SF.Foundation.Analytics
                         // hold additional metadata for an API. Version and title are required but you can also provide
                         // additional fields by chaining methods off SingleApiVersion.
                         //
-                        c.SingleApiVersion("v1", "SF.Foundation.Analytics");
+                        //c.SingleApiVersion("v1", "SF.Foundation.Analytics");
+
+                        c.MultipleApiVersions(ResolveVersionSupportByRouteConstraint, vc =>
+                        {
+                            vc.Version("sf_custom", "SF Custom APIs (you can switch to Sitecore API /swagger/docs/sc)");
+                            vc.Version("sc", "Sitecore services (you can switch to SF Custom APIs /swagger/docs/sf_custom)");
+                        });
+
+
 
                         // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
                         //
@@ -128,7 +138,7 @@ namespace SF.Foundation.Analytics
                         // Swagger docs and UI. However, if you have multiple types in your API with the same class name, you'll
                         // need to opt out of this behavior to avoid Schema Id conflicts.
                         //
-                        //c.UseFullTypeNameInSchemaIds();
+                        c.UseFullTypeNameInSchemaIds();
 
                         // Alternatively, you can provide your own custom strategy for inferring SchemaId's for
                         // describing "complex" types in your API.
@@ -251,6 +261,14 @@ namespace SF.Foundation.Analytics
                         //
                         //c.EnableApiKeySupport("apiKey", "header");
                     });
+        }
+
+
+        private static bool ResolveVersionSupportByRouteConstraint(ApiDescription apiDesc, string targetApiVersion)
+        {
+            if (apiDesc.Route.RouteTemplate.StartsWith("api/sf/1.0") && targetApiVersion == "sf_custom") return true;
+            if (!apiDesc.Route.RouteTemplate.StartsWith("api/sf/1.0") && targetApiVersion == "sc") return true;
+            return false;
         }
     }
 }
