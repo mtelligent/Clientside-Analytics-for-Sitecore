@@ -199,30 +199,33 @@ namespace SF.Foundation.Analytics
                     return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Tracker is not active.");
                 }
 
-                var goalId = Guid.Empty;
-                IGoalDefinition goalDefinition = null;
-                if (Guid.TryParse(goal.goalId, out goalId))
+                using (new Sitecore.SecurityModel.SecurityDisabler())
                 {
-                    goalDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Goals[goalId];
-                }
-                else
-                {
-                    goalDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Goals[goal.goal];
-                }
+                    var goalId = Guid.Empty;
+                    IGoalDefinition goalDefinition = null;
+                    if (Guid.TryParse(goal.goalId, out goalId))
+                    {
+                        goalDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Goals[goalId];
+                    }
+                    else
+                    {
+                        goalDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Goals[goal.goal];
+                    }
 
-                var pageId = Guid.Empty;
-                Guid.TryParse(goal.pageId, out pageId);
-                var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
-                var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
+                    var pageId = Guid.Empty;
+                    Guid.TryParse(goal.pageId, out pageId);
+                    var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
+                    var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
 
-                if (goalDefinition != null)
-                {
-                    page.RegisterGoal(goalDefinition);
-                    return Request.CreateResponse(System.Net.HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Goal is not valid.");
+                    if (goalDefinition != null)
+                    {
+                        page.RegisterGoal(goalDefinition);
+                        return Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Goal is not valid.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -243,32 +246,36 @@ namespace SF.Foundation.Analytics
                     return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Tracker is not active.");
                 }
 
-                var outcomeId = Guid.Empty;
-                IOutcomeDefinition outcomeDefinition = null;
-
-                if (Guid.TryParse(outcome.outcomeId, out outcomeId))
+                using (new Sitecore.SecurityModel.SecurityDisabler())
                 {
-                    outcomeDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Outcomes[outcomeId];
-                }
-                else
-                {
-                    outcomeDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Outcomes[outcome.outcome];
-                }
 
-                var pageId = Guid.Empty;
-                Guid.TryParse(outcome.pageId, out pageId);
-                var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
-                var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
+                    var outcomeId = Guid.Empty;
+                    IOutcomeDefinition outcomeDefinition = null;
+
+                    if (Guid.TryParse(outcome.outcomeId, out outcomeId))
+                    {
+                        outcomeDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Outcomes[outcomeId];
+                    }
+                    else
+                    {
+                        outcomeDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Outcomes[outcome.outcome];
+                    }
+
+                    var pageId = Guid.Empty;
+                    Guid.TryParse(outcome.pageId, out pageId);
+                    var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
+                    var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
 
 
-                if (outcomeDefinition != null)
-                {
-                    Tracker.CurrentPage.RegisterOutcome(outcomeDefinition, outcome.currency, outcome.value);
-                    return Request.CreateResponse(System.Net.HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Outcome is not valid.");
+                    if (outcomeDefinition != null)
+                    {
+                        Tracker.CurrentPage.RegisterOutcome(outcomeDefinition, outcome.currency, outcome.value);
+                        return Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Outcome is not valid.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -290,32 +297,35 @@ namespace SF.Foundation.Analytics
                     return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Tracker is not active.");
                 }
 
-                var campaignId = Guid.Empty;
-                ICampaignActivityDefinition campaignDefinition = null;
-
-                if (Guid.TryParse(campaign.campaign, out campaignId))
+                using (new Sitecore.SecurityModel.SecurityDisabler())
                 {
-                    campaignDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Campaigns[campaignId];
-                }
-                else
-                {
-                    campaignDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Campaigns[campaign.campaign];
-                }
+                    var campaignId = Guid.Empty;
+                    ICampaignActivityDefinition campaignDefinition = null;
 
-                var pageId = Guid.Empty;
-                Guid.TryParse(campaign.pageId, out pageId);
-                var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
-                var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
+                    if (Guid.TryParse(campaign.campaign, out campaignId))
+                    {
+                        campaignDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Campaigns[campaignId];
+                    }
+                    else
+                    {
+                        campaignDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.Campaigns[campaign.campaign];
+                    }
+
+                    var pageId = Guid.Empty;
+                    Guid.TryParse(campaign.pageId, out pageId);
+                    var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
+                    var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
 
 
-                if (campaignDefinition != null)
-                {
-                    Tracker.CurrentPage.TriggerCampaign(campaignDefinition);
-                    return Request.CreateResponse(System.Net.HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Campaign is not valid.");
+                    if (campaignDefinition != null)
+                    {
+                        Tracker.CurrentPage.TriggerCampaign(campaignDefinition);
+                        return Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Campaign is not valid.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -335,33 +345,35 @@ namespace SF.Foundation.Analytics
                 {
                     return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Tracker is not active.");
                 }
-
-                var pageEventId = Guid.Empty;
-                IPageEventDefinition pageEventDefinition = null;
-
-                if (Guid.TryParse(pageEvent.eventId, out pageEventId))
+                using (new Sitecore.SecurityModel.SecurityDisabler())
                 {
-                    pageEventDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.PageEvents[pageEventId];
-                }
-                else
-                {
-                    pageEventDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.PageEvents[pageEvent.eventName];
-                }
+                    var pageEventId = Guid.Empty;
+                    IPageEventDefinition pageEventDefinition = null;
 
-                var pageId = Guid.Empty;
-                Guid.TryParse(pageEvent.pageId, out pageId);
-                var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
-                var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
+                    if (Guid.TryParse(pageEvent.eventId, out pageEventId))
+                    {
+                        pageEventDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.PageEvents[pageEventId];
+                    }
+                    else
+                    {
+                        pageEventDefinition = Sitecore.Analytics.Tracker.MarketingDefinitions.PageEvents[pageEvent.eventName];
+                    }
+
+                    var pageId = Guid.Empty;
+                    Guid.TryParse(pageEvent.pageId, out pageId);
+                    var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
+                    var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
 
 
-                if (pageEventDefinition != null)
-                {
-                    Tracker.CurrentPage.RegisterPageEvent(pageEventDefinition);
-                    return Request.CreateResponse(System.Net.HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Page Event is not valid.");
+                    if (pageEventDefinition != null)
+                    {
+                        Tracker.CurrentPage.RegisterPageEvent(pageEventDefinition);
+                        return Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Page Event is not valid.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -382,29 +394,31 @@ namespace SF.Foundation.Analytics
                 {
                     return Request.CreateErrorResponse(System.Net.HttpStatusCode.PreconditionFailed, "Tracker is not active.");
                 }
-
-                var pageId = Guid.Empty;
-                Guid.TryParse(data.pageId, out pageId);
-
-                var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
-                var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
-
-                var pageEventData = new PageEventData(data.name);
-                pageEventData.ItemId = page.Item.Id;
-                pageEventData.Data = data.data;
-                pageEventData.Text = data.text;
-                pageEventData.DataKey = data.dataKey;
-
-
-                var peDefId = Guid.Empty;
-                if (!string.IsNullOrEmpty(data.eventId) && Guid.TryParse(data.eventId, out peDefId))
+                using (new Sitecore.SecurityModel.SecurityDisabler())
                 {
-                    pageEventData.PageEventDefinitionId = peDefId;
+                    var pageId = Guid.Empty;
+                    Guid.TryParse(data.pageId, out pageId);
+
+                    var pageInteraction = Tracker.Interaction.Pages.LastOrDefault(a => a.Item.Id == pageId);
+                    var page = pageInteraction != null ? Tracker.Interaction.GetPage(pageInteraction.VisitPageIndex) : Tracker.Interaction.PreviousPage;
+
+                    var pageEventData = new PageEventData(data.name);
+                    pageEventData.ItemId = page.Item.Id;
+                    pageEventData.Data = data.data;
+                    pageEventData.Text = data.text;
+                    pageEventData.DataKey = data.dataKey;
+
+
+                    var peDefId = Guid.Empty;
+                    if (!string.IsNullOrEmpty(data.eventId) && Guid.TryParse(data.eventId, out peDefId))
+                    {
+                        pageEventData.PageEventDefinitionId = peDefId;
+                    }
+
+                    page.Register(pageEventData);
+
+                    return Request.CreateResponse(System.Net.HttpStatusCode.OK);
                 }
-
-                page.Register(pageEventData);
-
-                return Request.CreateResponse(System.Net.HttpStatusCode.OK);
             }
             catch(Exception ex)
             {
