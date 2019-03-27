@@ -15,7 +15,7 @@
                     $("#outputGetSitecoreEvents").html(JSON.stringify(data, undefined, 2));
                 });
             });
-            $("#btnGetSitecoreEvents").click(function () {
+            $("#btnTrackInteraction").click(function () {
                 var id = $("#txtInteractionId").val();
                 SF.Analytics.trackInteraction(id);
             });
@@ -37,6 +37,14 @@
                 var currency = $("#txtTrackOutcomeCurrency").val();
                 var outcomeValue = $("#txtTrackOutcomeValue").val();
                 SF.Analytics.trackOutcome(outcome, currency, outcomeValue);
+            });
+            $("#btnIdentifyContact").click(function () {
+                var identifier = $("#txtIdentifier").val();
+                var identifierSource = $("#txtIdentifierSource").val();
+                var firstName = $("#txtFirstName").val();
+                var lastName = $("#lastName").val();
+                var email = $("#txtEmail").val();
+                SF.Analytics.identifyContact(identifier, identifierSource, firstName, lastName, email);
             });
             $("#btnTriggerCampaign").click(function () {
                 var campaign = $("#txtCampaign").val();
@@ -66,6 +74,19 @@
             <pre id="outputGetSitecoreEvents">
     
             </pre>
+        </li>
+        <li>
+            <h2>identifyContact</h2>
+            <p>Identifies visitor as a known contact and optionally sets OOB contact facets for first name, last name and email address.</p>
+            <pre>
+            SF.Analytics.identifyContact(identifier, identifierSource, firstName, lastName, email);
+            </pre>
+            <input type="text" id="txtIdentifier" value="test@email.com" />
+            <input type="text" id="txtIdentifierSource" value="testwebsite" />
+            <input type="text" id="txtFirstName" value="FirstName" />
+            <input type="text" id="txtLastName" value="LastName" />
+            <input type="text" id="txtEmail" value="test@email.com" />
+            <input type="button" id="btnIdentifyContact" value="Try it Out" />
         </li>
         <li>
             <h2>trackInteraction</h2>
@@ -99,7 +120,7 @@
             SF.Analytics.trackGoal(eventName);
             SF.Analytics.trackGoal(eventItemId);
             </pre>
-            <input type="text" id="txtTrackPageEvent" value="PersonalizationEvent" />
+            <input type="text" id="txtTrackPageEvent" value="Page visited" />
             <input type="button" id="btnTrackPageEvent" value="Try it Out" />
         </li>
         <li>
@@ -110,7 +131,7 @@
             <pre>
             SF.Analytics.trackCustomEvent(eventName, eventLabel);
             </pre>
-            <input type="text" id="txtTrackCustomEvent" value="PersonalizationEvent" />
+            <input type="text" id="txtTrackCustomEvent" value="Page visited" />
             <input type="text" id="txtTrackCustomEventLabel" value="searchTerm" />
             <input type="button" id="btnTrackCustomEvent" value="Try it Out" />
         </li>

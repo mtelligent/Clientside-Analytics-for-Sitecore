@@ -17,12 +17,43 @@ SF.Analytics = (function () {
             }
         });
     },
-    getSitecoreEvents = function () {
-        var def = $.Deferred();
-        var url = '/api/SF/1.0/analytics/GetTracker';
+        getSitecoreEvents = function () {
+            var def = $.Deferred();
+            var url = '/api/SF/1.0/analytics/GetTracker';
+
+            var data = {
+                pageId: SF.PageID
+            };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (data) {
+
+                    console.log('Retreived Data from Sitecore');
+                    SF.SitecoreData = data;
+                    def.resolve(data);
+                },
+                failure: function (errMsg) {
+                    console.log('Failure' + errMsg);
+                    def.reject();
+                }
+            });
+
+            return def.promise();
+        },
+    identifyContact = function (identifier, identifierSource, firstName, lastName, email) {
+        console.log('picked up track, posting to service');
+
+        var url = '/api/SF/1.0/analytics/IdentifyContact';
 
         var data = {
-            pageId: SF.PageID
+            identifier: identifier,
+            identifierSource: identifierSource,
+            firstName: firstName,
+            lastName: lastName,
+            email: email
         };
 
         $.ajax({
@@ -30,18 +61,12 @@ SF.Analytics = (function () {
             url: url,
             data: data,
             success: function (data) {
-
-                console.log('Retreived Data from Sitecore');                
-                SF.SitecoreData = data;
-                def.resolve(data);
+                console.log('Success ' + data);
             },
             failure: function (errMsg) {
-                console.log('Failure' + errMsg);
-                def.reject();
+                console.log('Failure ' + errMsg);
             }
         });
-
-        return def.promise();
     },
     trackInteraction = function (id) {
 
@@ -185,6 +210,7 @@ SF.Analytics = (function () {
         init: init,
         endSession: endSession,
         getSitecoreEvents: getSitecoreEvents,
+        identifyContact: identifyContact,
         trackInteraction: trackInteraction,
         trackGoal: trackGoal,
         trackPageEvent: trackPageEvent,
