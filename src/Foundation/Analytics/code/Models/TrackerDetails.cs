@@ -20,5 +20,6 @@ namespace SF.Foundation.Analytics
         public string email { get; set; }
 
         public List<EventDetails> events { get; set; }
+        
     }
 }

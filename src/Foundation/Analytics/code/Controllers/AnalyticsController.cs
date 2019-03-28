@@ -64,9 +64,10 @@ namespace SF.Foundation.Analytics
 
                 try
                 {
-                    var contact = Tracker.Contact;
-                    IContactPersonalInfo personal = contact.GetFacet<IContactPersonalInfo>("Personal");
-                    details.name = string.Format("{0} {1} {2}", personal.FirstName, personal.MiddleName, personal.Surname);
+                    var xConnectFacet = Tracker.Contact.GetFacet<Sitecore.Analytics.XConnect.Facets.IXConnectFacets>("XConnectFacets");
+                    PersonalInformation personal = xConnectFacet.Facets[PersonalInformation.DefaultFacetKey] as PersonalInformation;
+
+                    details.name = string.Format("{0} {1} {2}", personal.FirstName, personal.MiddleName, personal.LastName);
 
                 }
                 catch (Exception ex)
@@ -269,7 +270,7 @@ namespace SF.Foundation.Analytics
 
                     if (outcomeDefinition != null)
                     {
-                        Tracker.CurrentPage.RegisterOutcome(outcomeDefinition, outcome.currency, outcome.value);
+                        page.RegisterOutcome(outcomeDefinition, outcome.currency, outcome.value);
                         return Request.CreateResponse(System.Net.HttpStatusCode.OK);
                     }
                     else
@@ -319,7 +320,7 @@ namespace SF.Foundation.Analytics
 
                     if (campaignDefinition != null)
                     {
-                        Tracker.CurrentPage.TriggerCampaign(campaignDefinition);
+                        page.TriggerCampaign(campaignDefinition);
                         return Request.CreateResponse(System.Net.HttpStatusCode.OK);
                     }
                     else
@@ -367,7 +368,7 @@ namespace SF.Foundation.Analytics
 
                     if (pageEventDefinition != null)
                     {
-                        Tracker.CurrentPage.RegisterPageEvent(pageEventDefinition);
+                        page.RegisterPageEvent(pageEventDefinition);
                         return Request.CreateResponse(System.Net.HttpStatusCode.OK);
                     }
                     else

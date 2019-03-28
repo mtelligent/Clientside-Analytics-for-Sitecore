@@ -1,13 +1,13 @@
-<project site="tracelogger.dev.local" format="Zip Package" targetfilefolder="wwwroot">
+<project site="http://clientanalytics.dev.local/" format="Zip Package" targetfilefolder="wwwroot">
   <Metadata>
     <metadata>
-      <PackageName>Trace Logger for Sitecore</PackageName>
-      <Author>David San Filippo</Author>
-      <Version>0.5</Version>
+      <PackageName>Client Side Analytics for Sitecore</PackageName>
+      <Author>DSF</Author>
+      <Version>v 0.5</Version>
       <Revision />
       <License>MIT License
 
-Copyright (c) 2019 David San Filippo
+Copyright (c) David San Filippo
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,15 @@ SOFTWARE.</License>
   <SaveProject>True</SaveProject>
   <Sources>
     <xitems>
-      <Entries />
+      <Entries>
+        <x-item>/master/sitecore/templates/Foundation/SF/Analytics/Configuration Templates/{922000F2-85F9-4FE5-9A27-BEC1C80EDBCE}/invariant/0</x-item>
+        <x-item>/master/sitecore/templates/Foundation/SF/Analytics/Configuration Templates/Client Side Interaction/{784B9825-E479-4135-8E94-684253E135EB}/invariant/0</x-item>
+        <x-item>/master/sitecore/templates/Foundation/SF/Analytics/Configuration Templates/Client Side Interaction/Interaction Details/{B4ADBD00-0668-4B17-8B1B-EBF9F46AC246}/invariant/0</x-item>
+        <x-item>/master/sitecore/templates/Foundation/SF/Analytics/Configuration Templates/Client Side Interaction/__Standard Values/{0306F326-D69E-465C-890B-8DC124A3B46B}/invariant/0</x-item>
+        <x-item>/master/sitecore/templates/Foundation/SF/Analytics/Configuration Templates/Client Side Interaction/Interaction Details/Name/{9B5EC872-DE66-4629-8419-01D3488FAE9A}/invariant/0</x-item>
+        <x-item>/master/sitecore/system/Marketing Control Panel/Client Side Interactions/{E8421097-FD61-482F-B88A-51C2AE2AFAB9}/invariant/0</x-item>
+        <x-item>/master/sitecore/system/Marketing Control Panel/Client Side Interactions/Sample Interaction/{7FE47D90-4496-431D-B9BC-1AF297F755A9}/invariant/0</x-item>
+      </Entries>
       <SkipVersions>False</SkipVersions>
       <Converter>
         <ItemToEntryConverter>
@@ -59,9 +67,15 @@ SOFTWARE.</License>
     </xitems>
     <xfiles>
       <Entries>
-        <x-item>/bin/SF.Foundation.TraceLogger.dll</x-item>
-        <x-item>/bin/SF.Foundation.TraceLogger.pdb</x-item>
-        <x-item>/App_Config/Include/Foundation.TraceLogger</x-item>
+        <x-item>/bin/SF.Foundation.Analytics.dll</x-item>
+        <x-item>/bin/SF.Foundation.Analytics.pdb</x-item>
+        <x-item>/App_Config/Include/ZFeature.Routes/AnalyticsRoutes.config</x-item>
+        <x-item>/Scripts/Foundation/Analytics/analytics.min.js</x-item>
+        <x-item>/Scripts/Foundation/Analytics/loadAnalytics.js</x-item>
+        <x-item>/Scripts/Foundation/Analytics/sitecoreAnalytics.js</x-item>
+        <x-item>/Scripts/Foundation/Analytics/sitecorePlugin.js</x-item>
+        <x-item>/Tests/ClientAnalyticsTests.html</x-item>
+        <x-item>/bin/Swashbuckle.Core.dll</x-item>
       </Entries>
       <Converter>
         <FileToEntryConverter>
